@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Parental Control System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+
+<div class="logo">
+ParentControl
+</div>
+
+<ul class="nav-links">
+
+<li><a href="#">Home</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Contact</a></li>
+<div class="auth-buttons">
+
+<a href="/login" class="login-btn">Login</a>
+
+<a href="/register" class="register-btn">Register</a>
+</div>
+</ul>
+
+</nav>
+
+
+<!-- Slider Section -->
+<div class="slider">
+
+    <!-- Slide 1 -->
+    <div class="slide active">
+        <div class="slide-content">
+
+            <div class="slide-image">
+                <img src="{{ url_for('static', filename='image1.jpg') }}">
+            </div>
+
+            <div class="slide-text">
+                <h2>Smart Parental Control</h2>
+                <p>Monitor your child's daily activities and keep track of their progress.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+        <div class="slide-content">
+
+            <div class="slide-image">
+                <img src="{{ url_for('static', filename='image2.jpg') }}">
+            </div>
+
+            <div class="slide-text">
+                <h2>Track Daily Tasks</h2>
+                <p>Parents can view tasks completed by their children throughout the day.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+        <div class="slide-content">
+
+            <div class="slide-image">
+                <img src="{{ url_for('static', filename='image3.jpg') }}">
+            </div>
+
+            <div class="slide-text">
+                <h2>Screen Time Monitoring</h2>
+                <p>Keep screen usage balanced and promote healthy digital habits.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+        <div class="slide-content">
+
+            <div class="slide-image">
+                <img src="{{ url_for('static', filename='image4.jfif') }}">
+            </div>
+
+            <div class="slide-text">
+                <h2>Goal Achievement</h2>
+                <p>Track whether children are completing their daily goals or not.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+        <div class="slide-content">
+
+            <div class="slide-image">
+                <img src="{{ url_for('static', filename='image5.jfif') }}">
+            </div>
+
+            <div class="slide-text">
+                <h2>Performance Analytics</h2>
+                <p>Visual charts help parents understand children's performance.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<section class="how-it-works">
+
+    <h2>How It Works</h2>
+    <p class="subtitle">Follow these simple steps to monitor your child's activities</p>
+
+    <div class="steps-container">
+
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='step1.png') }}" alt="Create Account">
+            <h3>Create Parent Account</h3>
+            <p>Parents create an account to access the monitoring dashboard.</p>
+        </div>
+
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='step2.png') }}" alt="Connect Device">
+            <h3>Connect Child Device</h3>
+            <p>Link the child's tablet or device with the parent account.</p>
+        </div>
+
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='step3.png') }}" alt="Track Activities">
+            <h3>Track Activities</h3>
+            <p>The system records screen time, apps used and completed tasks.</p>
+        </div>
+
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='step4.png') }}" alt="View Dashboard">
+            <h3>View Dashboard</h3>
+            <p>Parents can monitor performance and progress through charts.</p>
+        </div>
+
+    </div>
+
+</section>
+<section class="faq-section">
+
+<h2 class="faq-title">Quick Questions</h2>
+
+<div class="faq-item">
+<button class="faq-question">
+What is the purpose of the Parental Control system?
+<span class="arrow">▼</span>
+</button>
+<div class="faq-answer">
+<p>The parental control system helps parents monitor and manage their child's digital activities to ensure safe and responsible internet usage.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">
+How can parents monitor their child’s activity?
+<span class="arrow">▼</span>
+</button>
+<div class="faq-answer">
+<p>Parents can log into their dashboard and view activity reports, usage details, and other monitoring features provided by the system.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">
+Is the child’s data secure in this system?
+<span class="arrow">▼</span>
+</button>
+<div class="faq-answer">
+<p>Yes, the system stores information securely and only authorized parents can access their child’s data.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">
+Can parents manage multiple children accounts?
+<span class="arrow">▼</span>
+</button>
+<div class="faq-answer">
+<p>Yes, parents can add and manage multiple child profiles under a single parent account.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">
+How do I register in the Parental Control system?
+<span class="arrow">▼</span>
+</button>
+<div class="faq-answer">
+<p>You can register by creating a parent account and then adding your child’s details in the registration form.</p>
+</div>
+</div>
+
+</section>
+<footer class="footer">
+
+<div class="footer-container">
+
+<!-- Column 1 -->
+<div class="footer-col">
+<h3>Parental Control</h3>
+<p>
+Parental Control is a smart system designed to help parents monitor and guide
+their children’s digital activities. It allows parents to track usage,
+ensure safety, and create a secure online environment for children.
+</p>
+</div>
+
+<!-- Column 2 -->
+<div class="footer-col">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About Us</a></li>
+<li><a href="/register">Register</a></li>
+<li><a href="/login">Login</a></li>
+<li><a href="/contact">Contact</a></li>
+</ul>
+</div>
+
+<!-- Column 3 -->
+<div class="footer-col">
+<h3>Features</h3>
+<ul>
+<li>Parent & Child Account System</li>
+<li>Screen Time Monitoring</li>
+<li>Activity Tracking</li>
+<li>Secure Login Access</li>
+<li>Child Safety Management</li>
+</ul>
+</div>
+
+<!-- Column 4 -->
+<div class="footer-col">
+<h3>Contact Information</h3>
+<p>Email: <a href="mailto:patwariyapayal82@gmail.com">patwariyapayal82@gmail.com</a></p>
+<p>Phone: <a href="tel:+919993958308">+91 9993958308</a></p>
+<p>Address: <a href="https://maps.google.com/?q=Indore,+India" target="_blank">Indore, India</a></p>
+</div>
+
+</div>
+
+<hr>
+
+<div class="footer-bottom">
+<p>© 2026 Parental Control System | All Rights Reserved</p>
+</div>
+
+</footer>
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(){
+
+slides[index].classList.remove("active");
+
+index++;
+
+if(index >= slides.length){
+index = 0;
+}
+
+slides[index].classList.add("active");
+
+}
+
+setInterval(showSlide,5000);
+const questions = document.querySelectorAll(".faq-question");
+
+questions.forEach(q=>{
+q.addEventListener("click", ()=>{
+const answer = q.nextElementSibling;
+
+if(answer.style.display === "block"){
+answer.style.display = "none";
+}else{
+answer.style.display = "block";
+}
+});
+});
+</script>
+
+</body>
+</html>

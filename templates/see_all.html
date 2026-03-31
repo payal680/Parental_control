@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Tasks</title>
+</head>
+<body>
+
+<h2>All Tasks</h2>
+
+{% for task in tasks %}
+<h2>Pending Tasks</h2>
+
+{% for task in pending_tasks %}
+<div>
+{{ task.task_name }} - Pending
+</div>
+{% endfor %}
+
+<hr>
+<!-- completed tasks  -->
+{% endfor %}
+<h2>Completed Tasks</h2>
+
+{% for task in completed_tasks %}
+<div>
+{{ task.task_name }} - Completed ✅
+</div>
+{% endfor %}
+
+</body>
+</html>

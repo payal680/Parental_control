@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parental Control System </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Parental Control</h1>
+         <p> helps parents monitor and manage their child's
+        digital activities in a safe and responsible way.</p>
+    </header>
+
+    <main>
+         <div class="form-container">
+            <div class="form-box">
+                <h2>Login</h2>
+            <form action="/login" method="post">
+                <input type="email" name="email" placeholder="Enter your Email" required>
+                <input type="password" name="password" placeholder="Enter your Password" required>
+
+                <button type="submit" class="btn">Login</button>
+                {% if message %}
+                <p style="color:red;">{{ message }}</p>
+                {% endif %}
+
+            </form>
+            
+            <p class="register-text">
+                Don't have an account?
+                <a href="\register">Register here</a>
+            </p>
+         
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Campus Link</p>
+    </footer>
+</body>
+</html>

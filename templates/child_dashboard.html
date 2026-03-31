@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Child Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='child_dashboard.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div>
+        <section class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            
+        </section>
+        <h2>Child Panel</h2>
+        </div>
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="/view_tasks">My Tasks</a></li>
+            <li><a href="#">Progress</a></li>
+            <li><a href="#">Credits</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+    <div class="top-bar" id="top-bar">
+        <ul>
+    <img src="{{ url_for('static', filename='logo.png') }}" 
+         alt="Profile" 
+         class="profile-icon"
+         onclick="openSidebar()">
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+
+        <!-- Welcome Section -->
+        <div class="welcome-card">
+            <h1>Welcome, {{ session['fullname'] }}</h1>
+            <p>Stay focused and achieve your goals today 🚀</p>
+        </div>
+        <section class="tasks-section">
+    <h2>Assigned Tasks</h2>
+
+    <!-- Overall Progress -->
+    <div class="progress-container">
+
+    <div class="progress-bar">
+        <div class="progress"
+             style="width: {{ completion_percent | default(0) }}%;">
+        </div>
+    </div>
+
+    <span class="progress-text">
+        {{ completion_percent | default(0) }}% Completed
+    </span>
+
+</div>
+
+
+<!-- Tasks List -->
+<div class="tasks-list">
+
+    {% for task in tasks %}
+
+    <div class="task-card {% if task.completed %}completed{% else %}pending{% endif %}">
+
+        <div class="task-name">{{ task.task_name }}</div>
+
+        <div class="task-info">
+            <span>Assigned By: {{ task.assigned_by }}</span>
+            <span>Due: {{ task.due_date }}</span>
+        </div>
+
+        {% if not task.completed %}
+        <form action="{{ url_for('complete_task') }}" method="POST" enctype="multipart/form-data">
+
+        <input type="hidden" name="task_id" value="{{ task.id }}">
+
+        <input type="file" name="proof_image" accept="image/*" required>
+        <button type="submit" class="complete-btn">
+        Upload Proof & Complete
+    </button>
+
+</form>
+
+        {% else %}
+
+        <span class="completed-label">Completed ✅</span>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+<div style="text-align:center; margin-top:20px;">
+<a href="/see_all" class="see-all-btn">See All Tasks</a>
+</div>
+
+        <h1>Your Screen Activity</h1>
+
+<!-- PIE CHART -->
+
+<div class="card">
+
+<h2>Today's Screen Time</h2>
+
+<canvas id="screenChart"></canvas>
+
+<div class="time-display">
+
+<span id="screenTimeValue">0</span> Minutes Used
+
+</div>
+
+</div>
+
+
+<!-- SMART MESSAGE CARD -->
+
+<div class="message-card" id="childMessageCard">
+
+<div class="msg-icon" id="msgIcon">⭐</div>
+
+<div class="msg-content">
+
+<h3 id="messageTitle"></h3>
+
+<div class="message-box" id="messageText"></div>
+
+</div>
+
+</div>
+
+</div>
+
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/child_dashboard.js') }}"></script>
+  
+</script>
+
+</body>
+</html>

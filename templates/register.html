@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register-Parental Control</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+
+<body>
+
+<div class="reg-container">
+
+<h2>Parent & Child Registration</h2>
+
+<form action="/register" method="POST">
+
+<div class="form-grid">
+
+<!-- Parent Section -->
+<div class="form-section">
+
+<h3>Parent Information</h3>
+
+<label>Parent Name</label>
+<input type="text" name="parent_name" required>
+
+<label>Email</label>
+<input type="email" name="email" required>
+
+<label>Password</label>
+<input type="password" name="parent_password" required>
+
+<label>Phone</label>
+<input type="text" name="phone" required>
+
+</div>
+
+
+<!-- Child Section -->
+<div class="form-section">
+
+<h3>Child Information</h3>
+
+<label>Child Name</label>
+<input type="text" name="child_name" required>
+
+<label>Child Email</label>
+<input type="email" name="child_email" required>
+
+<label>Child Password</label>
+<input type="password" name="child_password" required>
+
+<label>Class / Year</label>
+<input type="text" name="class" required>
+
+<label>Student Type</label>
+<select name="student_type" required>
+<option value="">Select Type</option>
+<option value="school">School</option>
+<option value="college">College</option>
+</select>
+
+</div>
+
+</div>
+
+<div class="submit-area">
+<button type="submit">Register</button>
+</div>
+
+</form>
+
+<p class="login-link">
+Already registered?
+<a href="{{ url_for('login') }}">Login</a>
+</p>
+
+</div>
+
+</body>
+</html>

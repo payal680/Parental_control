@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Set Task</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='set_task.css') }}" >
+    </head>
+    <body>
+        <div class="task-card">
+    
+    <h3>Assign Task</h3>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+<div class="success-msg">
+{{ messages[0] }}
+</div>
+
+{% endif %}
+{% endwith %}
+    <form action="/assign_task" method="POST">
+    
+    <label>Select Child</label>
+    <select name="child_id" required>
+    {% for child in children %}
+    <option value="{{ child.child_id }}">{{ child.name }}</option>
+    {% endfor %}
+    </select>
+    
+    <label>Task Name</label>
+    <input type="text" name="task_name" placeholder="Enter task name" required>
+    
+    <label>Due Date</label>
+    <input type="date" name="due_date" required>
+    
+    <button type="submit">Assign Task</button>
+    
+    </form>
+    
+    </div>
+    <h2>Assigned Tasks</h2>
+
+<div class="tasks-list">
+
+{% for task in tasks %}
+
+<div class="task-card">
+
+<h3>{{ task.task_name }}</h3>
+
+<p>Child: {{ task.child_name }}</p>
+
+<p>Assigned By: {{ task.assigned_by }}</p>
+
+<p>Due Date: {{ task.due_date }}</p>
+
+{% if task.completed %}
+<span class="completed">Completed ✅</span>
+{% else %}
+<span class="pending">Pending</span>
+{% endif %}
+{% if task.completed %}
+{% if task.proof_photo %}
+<p>Proof:</p>
+<img src="{{ url_for('static', filename='uploads/' + task.proof_photo) }}" width="120">
+{% endif %}
+<form action="/approve_task/{{ task.id }}" method="POST">
+<button>Approve</button>
+</form>
+{% endif %}
+<form action="/delete_task/{{ task.id }}" method="POST">
+<button type="submit">Delete Task</button>
+</form>
+
+</div>
+
+{% endfor %}
+
+</div>
+    </body>
+</html>

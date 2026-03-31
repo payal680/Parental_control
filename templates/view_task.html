@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Tasks</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:#f4f6fb;
+margin:0;
+padding:40px;
+}
+
+h2{
+margin-bottom:20px;
+color:#333;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+th, td{
+padding:12px;
+text-align:center;
+}
+
+th{
+background:#4CAF50;
+color:white;
+}
+
+tr:nth-child(even){
+background:#f9f9f9;
+}
+
+tr:hover{
+background:#f1f1f1;
+}
+
+/* STATUS */
+
+.completed{
+color:green;
+font-weight:bold;
+}
+
+.pending{
+color:orange;
+font-weight:bold;
+}
+
+/* CHART */
+
+.chart-container{
+margin-top:40px;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Assigned Tasks</h2>
+
+<table>
+
+<tr>
+<th>Child Name</th>
+<th>Task</th>
+<th>Assigned By</th>
+<th>Due Date</th>
+<th>Status</th>
+</tr>
+
+{% for task in tasks %}
+
+<tr>
+
+<td>{{ task.child_name }}</td>
+<td>{{ task.task_name }}</td>
+<td>{{ task.assigned_by }}</td>
+<td>{{ task.due_date }}</td>
+
+<td>
+{% if task.completed %}
+<span class="completed">Completed</span>
+{% else %}
+<span class="pending">Pending</span>
+{% endif %}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+
+<div class="chart-container">
+
+<h2>Daily Task Completion</h2>
+
+<canvas id="progressChart"></canvas>
+
+</div>
+
+</div>
+
+
+<script>
+
+const ctx = document.getElementById('progressChart');
+
+new Chart(ctx, {
+type: 'bar',
+data: {
+labels: {{ days|safe }},
+datasets: [{
+label: 'Tasks Completed',
+data: {{ counts|safe }},
+borderWidth: 1
+}]
+},
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+}
+});
+
+</script>
+
+</body>
+</html>
