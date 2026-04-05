@@ -1,140 +1,116 @@
-let selectedApp = ""
-
-
-/* PIE CHART */
-
-function createChart(screenTime){
-
-let remaining = 180 - screenTime
-
-let ctx = document.getElementById("screenChart")
-
-new Chart(ctx,{
-
-type:'pie',
-
-data:{
-
-labels:['Used','Remaining'],
-
-datasets:[{
-
-data:[screenTime,remaining],
-
-backgroundColor:[
-'#ff6384',
-'#36a2eb'
-]
-
-}]
-
+function openSidebar() {
+    document.getElementById("sidebar").classList.add("active");
+    document.getElementById("main-content").classList.add("shift");
 }
 
-})
+document.addEventListener("click", function(event) {
+    const sidebar = document.getElementById("sidebar");
+    const icon = document.querySelector(".profile-icon");
+    const mainContent = document.getElementById("main-content");
 
-updateMessage(screenTime)
+    if (
+        sidebar.classList.contains("active") &&
+        !sidebar.contains(event.target) &&
+        !icon.contains(event.target)
+    ) {
+        sidebar.classList.remove("active");
+        mainContent.classList.remove("shift");
+    }
+});
+// -----------------------------
+// WEEKLY SCREEN TIME BAR GRAPH
+// -----------------------------
 
-}
+const weekLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
+// screen time hours for demo
+const screenData = [3,4,2,5,6,4,3];
 
+const screenCtx = document.getElementById("screenChart").getContext("2d");
 
-/* MESSAGE SYSTEM */
-
-function updateMessage(time){
-
-let title=document.getElementById("messageTitle")
-
-let box=document.getElementById("messageBox")
-
-if(time < 60){
-
-title.innerHTML="Healthy Digital Habit"
-
-box.innerHTML="Your child is maintaining a balanced screen routine. No action required."
-
-}
-
-else if(time < 120){
-
-title.innerHTML="Moderate Screen Usage"
-
-box.innerHTML="Your child's usage is increasing. Consider monitoring activities."
-
-}
-
-else{
-
-title.innerHTML="High Screen Time Alert"
-
-box.innerHTML="Screen usage has exceeded recommended limits. You may apply restrictions."
-
-}
-
-}
-
-
-
-/* LOAD APP LIMITS */
-
-function loadAppLimits(){
-
-fetch("/get_app_limits/1")
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let table=document.getElementById("appsTable")
-
-data.forEach(app=>{
-
-table.innerHTML += `
-
-<tr>
-
-<td>${app.app_name}</td>
-
-<td>${app.time_limit} min</td>
-
-<td>
-
-<button onclick="openLimitModal('${app.app_name}')">
-
-Edit
-
-</button>
-
-</td>
-
-</tr>
-
-`
-
-})
-
-})
-
-}
+new Chart(screenCtx, {
+    type: "bar",
+    data: {
+        labels: weekLabels,
+        datasets: [{
+            label: "Screen Time (Hours)",
+            data: screenData,
+            backgroundColor: "#007bff",
+            borderRadius: 6,
+            barThickness: 40
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 8,
+                ticks: {
+                    stepSize: 1,
+                    callback: function(value){
+                        return value + "h";
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
 
 
+// -----------------------------
+// APP USAGE PIE CHART
+// -----------------------------
 
-/* OPEN MODAL */
+const appCtx = document.getElementById("appChart").getContext("2d");
 
-function openLimitModal(app){
+new Chart(appCtx, {
+    type: "pie",
+    data: {
+        labels: [
+            "YouTube",
+            "WhatsApp",
+            "Google",
+            "Physics Wallah",
+            "Photos",
+            "Chrome",
+            "Phone"
+        ],
+        datasets: [{
+            data: [35,20,15,10,8,7,5],
+            backgroundColor: [
+                "#FF0000",
+                "#25D366",
+                "#4285F4",
+                "#FF6B6B",
+                "#FFA500",
+                "#00BFFF",
+                "#6A5ACD"
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "right"
+            }
+        }
+    }
+});
 
-selectedApp=app
-
-document.getElementById("limitModal").style.display="block"
-
-}
 
 
+// UPDATE APP LIMIT
 
-/* SAVE LIMIT */
+function updateLimit(appName,inputId){
 
-function saveLimit(){
-
-let limit=document.getElementById("limitInput").value
+let limit=document.getElementById(inputId).value
 
 fetch("/update_limit",{
 
@@ -147,7 +123,7 @@ headers:{
 body:JSON.stringify({
 
 child_id:1,
-app_name:selectedApp,
+app_name:appName,
 time_limit:limit
 
 })
@@ -160,25 +136,15 @@ time_limit:limit
 
 alert("Limit Updated")
 
-location.reload()
-
 })
 
 }
 
 
 
-/* FETCH SCREEN TIME */
+window.onload=function(){
 
-fetch("/get_screen_time")
+loadScreenGraph()
+loadAppUsage()
 
-.then(res=>res.json())
-
-.then(data=>{
-
-createChart(data.screen_time)
-
-})
-
-
-loadAppLimits()
+}

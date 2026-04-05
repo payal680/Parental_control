@@ -6,7 +6,7 @@ body{
 }
 .task-card{
 background:whitesmoke;
-width:350px;
+width:48%;
 padding:25px;
 border-radius:12px;
 box-shadow:0 6px 20px rgba(0,0,0,0.1);
@@ -88,4 +88,11 @@ font-weight:bold;
 .pending{
 color:red;
 font-weight:bold;
+}
+.tasks-list{
+display:flex;
+
+flex-wrap:wrap;
+gap:20px;
+margin-top:20px;
 }

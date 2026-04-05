@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='notifications.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+</head>
+<body>
+    <h1>Notifications</h1>
+
+<div id="notificationList"></div>
+
+<script>
+
+fetch("/get_notifications/1")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let container = document.getElementById("notificationList");
+
+data.forEach(n => {
+
+let div = document.createElement("div");
+
+div.className="notification-item";
+
+div.innerHTML = `
+<p>${n.message}</p>
+<small>${n.time}</small>
+`;
+
+container.appendChild(div);
+
+})
+
+})
+
+</script>
+</body>
+</html>     

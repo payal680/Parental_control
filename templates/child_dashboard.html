@@ -23,6 +23,13 @@
             <li><a href="#">Progress</a></li>
             <li><a href="#">Credits</a></li>
             <li><a href="/logout">Logout</a></li>
+            <li><a href="/notifications" class="notification-link">
+
+    <span class="bell">🔔 Notifications</span>
+
+    <span id="notificationCount" class="notification-count">0</span>
+
+    </a></li>
         </ul>
     </div>
     <div class="top-bar" id="top-bar">
@@ -31,6 +38,9 @@
          alt="Profile" 
          class="profile-icon"
          onclick="openSidebar()">
+    
+
+</div>
     </div>
     <!-- Main Content -->
     <div class="main-content" id="main-content">
@@ -96,53 +106,184 @@
     {% endfor %}
 
 </div>
-<div style="text-align:center; margin-top:20px;">
-<a href="/see_all" class="see-all-btn">See All Tasks</a>
-</div>
-
-        <h1>Your Screen Activity</h1>
-
-<!-- PIE CHART -->
+</section>
+<h1 style="text-align: center;">Your Screen Activity</h1>
 
 <div class="card">
 
-<h2>Today's Screen Time</h2>
+<h2>Weekly Screen Time</h2>
 
 <canvas id="screenChart"></canvas>
 
-<div class="time-display">
+</div>
 
-<span id="screenTimeValue">0</span> Minutes Used
+
+<div class="card">
+
+<h2>App Usage</h2>
+
+<canvas id="appChart"></canvas>
+</div>
+</div>
+<div id="childAppUsageCard">
+
+<h2>App Usage Today</h2>
+
+<div class="childAppsGrid">
+
+<div class="childAppBox">
+
+<div class="appHeader">
+<img src="/static/icons/youtube.png">
+<span>YouTube</span>
+</div>
+
+<div class="progressContainer">
+<div class="progressFill" style="width:60%"></div>
+</div>
+
+<div class="usageText">27 / 45 min used</div>
+
+</div>
+
+
+<div class="childAppBox">
+
+<div class="appHeader">
+<img src="/static/icons/pw.png">
+<span>Physics Wallah</span>
+</div>
+
+<div class="progressContainer">
+<div class="progressFill" style="width:40%"></div>
+</div>
+
+<div class="usageText">18 / 45 min used</div>
+
+</div>
+
+
+<div class="childAppBox">
+
+<div class="appHeader">
+<img src="/static/icons/google.png">
+<span>Google</span>
+</div>
+
+<div class="progressContainer">
+<div class="progressFill" style="width:30%"></div>
+</div>
+
+<div class="usageText">13 / 45 min used</div>
+
+</div>
+
+
+<div class="childAppBox">
+
+<div class="appHeader">
+<img src="/static/icons/whatsapp.png">
+<span>WhatsApp</span>
+</div>
+
+<div class="progressContainer">
+<div class="progressFill" style="width:70%"></div>
+</div>
+
+<div class="usageText">10 / 15 min used</div>
+
+</div>
+<div class="childAppBox">
+
+<div class="appHeader">
+<img src="/static/icons/chrome.png">
+<span>chrome</span>
+</div>
+
+<div class="progressContainer">
+<div class="progressFill" style="width:90%"></div>
+</div>
+
+<div class="usageText">12 / 15 min used</div>
+
+</div>
+<div class="childAppBox">
+
+<div class="appHeader">
+<img src="/static/icons/photos.png">
+<span>photos</span>
+</div>
+
+<div class="progressContainer">
+<div class="progressFill" style="width:35%"></div>
+</div>
+
+<div class="usageText">5 / 15 min used</div>
 
 </div>
 
 </div>
 
+</div>
+<footer class="footer" id="footer" >
 
-<!-- SMART MESSAGE CARD -->
+<div class="footer-container">
 
-<div class="message-card" id="childMessageCard">
+<!-- Column 1 -->
+<div class="footer-col">
+<h3>Parental Control</h3>
+<p>
+Parental Control is a smart system designed to help parents monitor and guide
+their children’s digital activities. It allows parents to track usage,
+ensure safety, and create a secure online environment for children.
+</p>
+</div>
 
-<div class="msg-icon" id="msgIcon">⭐</div>
+<!-- Column 2 -->
+<div class="footer-col">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About Us</a></li>
+<li><a href="/register">Register</a></li>
+<li><a href="/login">Login</a></li>
+<li><a href="/contact">Contact</a></li>
+</ul>
+</div>
 
-<div class="msg-content">
+<!-- Column 3 -->
+<div class="footer-col">
+<h3>Features</h3>
+<ul>
+<li>Parent & Child Account System</li>
+<li>Screen Time Monitoring</li>
+<li>Activity Tracking</li>
+<li>Secure Login Access</li>
+<li>Child Safety Management</li>
+</ul>
+</div>
 
-<h3 id="messageTitle"></h3>
-
-<div class="message-box" id="messageText"></div>
-
+<!-- Column 4 -->
+<div class="footer-col">
+<h3>Contact Information</h3>
+<p>Email: <a href="mailto:patwariyapayal82@gmail.com">patwariyapayal82@gmail.com</a></p>
+<p>Phone: <a href="tel:+919993958308">+91 9993958308</a></p>
+<p>Address: <a href="https://maps.google.com/?q=Indore,+India" target="_blank">Indore, India</a></p>
 </div>
 
 </div>
 
+<hr>
+
+<div class="footer-bottom">
+<p>© 2026 Parental Control System | All Rights Reserved</p>
 </div>
 
-    </div>
-</div>
-
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='js/child_dashboard.js') }}"></script>
   
-</script>
+
 
 </body>
 </html>

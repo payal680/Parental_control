@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='set_task.css') }}" >
     </head>
     <body>
-        <div class="task-card">
+        <div style="width:500px;" class="task-card">
     
     <h3>Assign Task</h3>
     {% with messages = get_flashed_messages() %}
@@ -37,6 +37,7 @@
     </form>
     
     </div>
+    <div class="all-tasks">
     <h2>Assigned Tasks</h2>
 
 <div class="tasks-list">
@@ -59,9 +60,9 @@
 <span class="pending">Pending</span>
 {% endif %}
 {% if task.completed %}
-{% if task.proof_photo %}
+{% if task.proof_image %}
 <p>Proof:</p>
-<img src="{{ url_for('static', filename='uploads/' + task.proof_photo) }}" width="120">
+<img src="{{ url_for('static', filename='uploads/' + task.proof_image) }}" width="120">
 {% endif %}
 <form action="/approve_task/{{ task.id }}" method="POST">
 <button>Approve</button>
@@ -75,6 +76,7 @@
 
 {% endfor %}
 
+</div>
 </div>
     </body>
 </html>

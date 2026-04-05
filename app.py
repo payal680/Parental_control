@@ -1,4 +1,5 @@
 import sqlite3
+from tkinter import INSERT
 from flask import Flask, jsonify, render_template, request, redirect, session,flash
 import os
 from werkzeug.utils import secure_filename
@@ -9,14 +10,17 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
 
-
+# ---------------ABOUT US--------------------
+# app.py
+@app.route("/about")
+def about_page():
+    return render_template("about.html")
 # ---------------- DATABASE CONNECTION ---------------- #
 
 def get_db_connection():
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     return conn
-
 
 # ---------------- CREATE DATABASE ---------------- #
 
@@ -80,6 +84,13 @@ def create_db():
     completed_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """)
+    # ---------screen time ---#
+    conn.execute("""
+   CREATE TABLE IF NOT EXISTS screen_time (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT,
+    minutes INTEGER
+);""")
     
  
     conn.execute("""
@@ -338,7 +349,10 @@ def assign_task_page():
         "SELECT parent_id FROM parent WHERE user_id=?",
         (session["user_id"],)
     ).fetchone()
-
+    if not parent:
+        conn.close()
+        return "Parent not found"
+    
     parent_id = parent["parent_id"]
 
     # children for dropdown
@@ -352,7 +366,7 @@ def assign_task_page():
 SELECT t.id, t.task_name, t.assigned_by, t.due_date,
        c.name as child_name,
        s.completed,
-       s.proof_photo
+       s.proof_image
 FROM tasks t
 JOIN child c ON t.child_id = c.child_id
 LEFT JOIN child_task_status s ON t.id = s.task_id
@@ -469,35 +483,95 @@ def delete_task(task_id):
 
     return redirect("/assign_task_page")
 # ---------------- Screen time control ---------------- #
-    @app.route("/get_screen_time")
-    def get_screen_time():
-        conn = get_db()
+
+@app.route("/get_weekly_screen_time")
+def get_weekly_screen_time():
+
+    weekly_data = {
+        "labels": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "hours": [4,3,5,2,6,4,3]
+    }
+
+    return jsonify(weekly_data)
+# ---------------- notifications show ---------------- #
+@app.route("/notifications")
+def notifications():
+    return render_template("notifications.html")
+@app.route("/get_notifications/<int:child_id>")
+def get_notifications(child_id):
+
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT total_time
-        FROM screen_time
-        WHERE child_id = 1
-    """)
+        SELECT child_message, created_at
+        FROM alerts
+        WHERE child_id = ?
+        ORDER BY created_at DESC
+    """,(child_id,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    notifications = []
+
+    for row in rows:
+        notifications.append({
+            "message": row["child_message"],
+            "time": row["created_at"]
+        })
+
+    return jsonify(notifications)
+
+#  ------- set app limit ---------------- #
+@app.route("/set_app_limit", methods=["POST"])
+def set_app_limit():
+
+    data = request.json
+
+    child_id = data["child_id"]
+    app_name = data["app_name"]
+    time_limit = data["time_limit"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # check if app already exists
+    cursor.execute("""
+        SELECT id FROM app_restrictions
+        WHERE child_id = ? AND app_name = ?
+    """,(child_id,app_name))
 
     row = cursor.fetchone()
 
+    if row:
+        # update existing limit
+        cursor.execute("""
+            UPDATE app_restrictions
+            SET time_limit = ?
+            WHERE child_id = ? AND app_name = ?
+        """,(time_limit,child_id,app_name))
+
+    else:
+        # insert new limit
+        cursor.execute("""
+            INSERT INTO app_restrictions(child_id,app_name,time_limit)
+            VALUES(?,?,?)
+        """,(child_id,app_name,time_limit))
+
+    conn.commit()
     conn.close()
 
-    if row:
-        screen_time = row["total_time"]
-    else:
-        screen_time = 0
-
-    return jsonify({"screen_time": screen_time})
-#get app limit 
+    return jsonify({"status":"saved"})
+# ----------------GET APP LIMIT---------------- #
 @app.route("/get_app_limits/<int:child_id>")
 def get_app_limits(child_id):
+
     conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT app_name, time_limit
+        SELECT app_name,time_limit
         FROM app_restrictions
         WHERE child_id = ?
     """,(child_id,))
@@ -509,58 +583,216 @@ def get_app_limits(child_id):
     limits = []
 
     for row in rows:
-
         limits.append({
             "app_name": row["app_name"],
             "time_limit": row["time_limit"]
         })
 
     return jsonify(limits)
-#update app limit
-@app.route("/update_limit", methods=["POST"])
-def update_limit():
 
-    data = request.get_json()
 
-    child_id = data["child_id"]
-    app_name = data["app_name"]
-    time_limit = data["time_limit"]
 
-    conn = get_db()
-    cursor = conn.cursor()
 
-    cursor.execute("""
-        UPDATE app_restrictions
-        SET time_limit = ?
-        WHERE child_id = ? AND app_name = ?
-    """,(time_limit, child_id, app_name))
 
-    conn.commit()
-    conn.close()
 
-    return jsonify({"status":"success"})
-#update messsages 
-@app.route("/update_usage", methods=["POST"])
-def update_usage():
 
-    data = request.get_json()
+# @app.route("/get_screen_time")
+# def get_screen_time():
 
-    child_id = data["child_id"]
-    usage = data["usage"]
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
 
-    conn = get_db()
-    cursor = conn.cursor()
+#     cursor.execute("""
+#         SELECT total_time
+#         FROM screen_time
+#         WHERE child_id = 1
+#     """)
 
-    cursor.execute("""
-        UPDATE screen_time
-        SET total_time = ?
-        WHERE child_id = ?
-    """,(usage, child_id))
+#     row = cursor.fetchone()
+#     conn.close()
 
-    conn.commit()
-    conn.close()
+#     if row:
+#         screen_time = row["total_time"]
+#     else:
+#         screen_time = 0
 
-    return jsonify({"status":"updated"})
+#     return jsonify({
+#         "screen_time": screen_time
+#     })
+# ---------------- GET APP LIMITS ---------------- #
+
+# @app.route("/get_app_limits/<int:child_id>")
+# def get_app_limits(child_id):
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+
+#     cursor.execute("""
+#         SELECT app_name, time_limit
+#         FROM app_restrictions
+#         WHERE child_id = ?
+#     """, (child_id,))
+
+#     rows = cursor.fetchall()
+#     conn.close()
+
+#     limits = []
+
+#     for row in rows:
+#         limits.append({
+#             "app_name": row["app_name"],
+#             "time_limit": row["time_limit"]
+#         })
+
+#     return jsonify(limits)
+
+
+# # ---------------- UPDATE APP LIMIT ---------------- #
+
+# @app.route("/update_limit", methods=["POST"])
+# def update_limit():
+
+#     data = request.get_json()
+
+#     child_id = data["child_id"]
+#     app_name = data["app_name"]
+#     time_limit = data["time_limit"]
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+
+#     cursor.execute("""
+#         UPDATE app_restrictions
+#         SET time_limit = ?
+#         WHERE child_id = ? AND app_name = ?
+#     """, (time_limit, child_id, app_name))
+
+#     conn.commit()
+#     conn.close()
+
+#     return jsonify({"status": "success"})
+
+
+# # ---------------- GET APP USAGE ---------------- #
+
+# @app.route("/get_app_usage")
+# def get_app_usage():
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+
+#     cursor.execute("""
+#         SELECT app_name, SUM(usage_time) as usage_time
+#         FROM app_usage
+#         WHERE child_id = 1
+#         GROUP BY app_name
+#     """)
+
+#     rows = cursor.fetchall()
+#     conn.close()
+
+#     usage_data = []
+
+#     for row in rows:
+#         usage_data.append({
+#             "app_name": row["app_name"],
+#             "usage_time": row["usage_time"]
+#         })
+
+#     return jsonify(usage_data)
+
+
+# # ---------------- STORE APP USAGE ---------------- #
+
+# @app.route("/api/store_usage", methods=["POST"])
+# def store_usage():
+
+#     data = request.get_json()
+
+#     child_id = data["child_id"]
+#     app_name = data["app_name"]
+#     usage_time = data["usage_time"]
+#     date = data["date"]
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+
+#     cursor.execute("""
+#         INSERT INTO app_usage(child_id,app_name,usage_time,date)
+#         VALUES(?,?,?,?)
+#     """, (child_id, app_name, usage_time, date))
+
+#     conn.commit()
+#     conn.close()
+
+#     return jsonify({"status": "stored"})
+
+
+# # ---------------- UPDATE SCREEN TIME ---------------- #
+
+# @app.route("/update_usage", methods=["POST"])
+# def update_usage():
+
+#     data = request.get_json()
+
+#     child_id = data["child_id"]
+#     usage = data["usage"]
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+
+#     cursor.execute("""
+#         UPDATE screen_time
+#         SET total_time = ?
+#         WHERE child_id = ?
+#     """, (usage, child_id))
+
+#     # alert if screen time high
+#     if usage > 180:
+
+#         cursor.execute("""
+#             INSERT INTO alerts(child_id,parent_message,child_message,created_at)
+#             VALUES(?,?,?,datetime('now'))
+#         """, (
+#             child_id,
+#             "Your child is using too much phone",
+#             "Your screen time is too high"
+#         ))
+
+#     conn.commit()
+#     conn.close()
+
+#     return jsonify({"status": "updated"})
+
+
+# # ---------------- GET ALERTS ---------------- #
+
+# @app.route("/get_alerts/<int:child_id>")
+# def get_alerts(child_id):
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+
+#     cursor.execute("""
+#         SELECT child_message
+#         FROM alerts
+#         WHERE child_id = ?
+#         ORDER BY created_at DESC
+#         LIMIT 1
+#     """, (child_id,))
+
+#     row = cursor.fetchone()
+#     conn.close()
+
+#     if row:
+#         return jsonify({
+#             "message": row["child_message"]
+#         })
+#     else:
+#         return jsonify({
+#             "message": ""
+#         })
+
 # ---------------- LOGOUT ---------------- #
 
 @app.route("/logout")
