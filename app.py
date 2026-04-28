@@ -1,11 +1,9 @@
 import sqlite3
-from tkinter import INSERT
+
 from flask import Flask, jsonify, render_template, request, redirect, session,flash
 import os
-from werkzeug.utils import secure_filename
-
-
-
+if not os.environ.get("RENDER_EXTERNAL_URL"):
+    import tkinter
 
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
