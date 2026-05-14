@@ -55,50 +55,55 @@
 </div>
 </div>
 <div class="app-limit-card">
-<h2>App Time Limits</h2>
+    <h2>App Time Limits</h2>
 
-<div class="apps-grid">
+    <div class="apps-grid">
 
-<div class="app-box">
-<img src="/static/icons/youtube.png">
-<span>YouTube</span>
-<input type="number" value="45"> min
-</div>
+        <div class="app-box">
+            <img src="/static/icons/youtube.png">
+            <span>YouTube</span>
+            <input type="number" id="youtube_limit" value="45" min="1"> min
+            <button onclick="updateLimit('YouTube', 'youtube_limit')">Set</button>
+        </div>
 
-<div class="app-box">
-<img src="/static/icons/pw.png">
-<span>Physics Wallah</span>
-<input type="number" value="45"> min
-</div>
+        <div class="app-box">
+            <img src="/static/icons/pw.png">
+            <span>Physics Wallah</span>
+            <input type="number" id="pw_limit" value="45" min="1"> min
+            <button onclick="updateLimit('Physics Wallah', 'pw_limit')">Set</button>
+        </div>
 
-<div class="app-box">
-<img src="/static/icons/google.png">
-<span>Google</span>
-<input type="number" value="45"> min
-</div>
+        <div class="app-box">
+            <img src="/static/icons/google.png">
+            <span>Google</span>
+            <input type="number" id="google_limit" value="45" min="1"> min
+            <button onclick="updateLimit('Google', 'google_limit')">Set</button>
+        </div>
 
-<div class="app-box">
-<img src="/static/icons/whatsapp.png">
-<span>WhatsApp</span>
-<input type="number" value="15"> min
-</div>
+        <div class="app-box">
+            <img src="/static/icons/whatsapp.png">
+            <span>WhatsApp</span>
+            <input type="number" id="whatsapp_limit" value="15" min="1"> min
+            <button onclick="updateLimit('WhatsApp', 'whatsapp_limit')">Set</button>
+        </div>
 
-<div class="app-box">
-<img src="/static/icons/chrome.png">
-<span>Chrome</span>
-<input type="number" value="15"> min
-</div>
+        <div class="app-box">
+            <img src="/static/icons/chrome.png">
+            <span>Chrome</span>
+            <input type="number" id="chrome_limit" value="15" min="1"> min
+            <button onclick="updateLimit('Chrome', 'chrome_limit')">Set</button>
+        </div>
 
-<div class="app-box">
-<img src="/static/icons/photos.png">
-<span>Photos</span>
-<input type="number" value="15"> min
-</div>
+        <div class="app-box">
+            <img src="/static/icons/photos.png">
+            <span>Photos</span>
+            <input type="number" id="photos_limit" value="15" min="1"> min
+            <button onclick="updateLimit('Photos', 'photos_limit')">Set</button>
+        </div>
 
-</div>
+    </div>
 
-<button class="see-all-btn">See All Apps</button>
-
+    <button class="see-all-btn">See All Apps</button>
 </div>
 <footer class="footer" id="footer" >
 

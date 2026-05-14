@@ -163,9 +163,106 @@ maintainAspectRatio:false
 });
 
 }
+// ----------- screen time weekly management --------------
+// STEP 2: Put this code in child_dashboard.js
 
+document.addEventListener("DOMContentLoaded", function () {
+    loadAppLimits();
 
-// -----------------------------
+    const toggleBtn = document.getElementById("toggleAppsBtn");
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", toggleApps);
+    }
+});
+
+let allAppLimits = [];
+let showAllApps = false;
+
+function loadAppLimits() {
+    fetch("/get_app_limits/1")
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data);   // Debug
+
+            if (data.status !== "success") {
+                console.error("Backend returned error");
+                return;
+            }
+
+            allAppLimits = data.limits || [];
+            renderAppLimits();
+        })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+        });
+}
+
+function renderAppLimits() {
+    const container = document.getElementById("appLimitsContainer");
+    const toggleBtn = document.getElementById("toggleAppsBtn");
+
+    if (!container) {
+        console.error("appLimitsContainer not found");
+        return;
+    }
+
+    container.innerHTML = "";
+
+    const appsToShow = showAllApps
+        ? allAppLimits
+        : allAppLimits.slice(0, 6);
+
+    appsToShow.forEach(app => {
+        const used = Math.floor(Math.random() * app.time_limit);
+        const percent = Math.min((used / app.time_limit) * 100, 100);
+
+        let iconName = app.app_name.toLowerCase();
+
+        if (iconName === "physics wallah") {
+            iconName = "pw";
+        } else {
+            iconName = iconName.replace(/\s+/g, "");
+        }
+
+        const card = `
+            <div class="childAppBox">
+                <div class="appHeader">
+                    <img src="/static/icons/${iconName}.png"
+                         onerror="this.src='/static/icons/default.png'">
+                    <span>${app.app_name}</span>
+                </div>
+
+                <div class="progressContainer">
+                    <div class="progressFill"
+                         style="width: ${percent}%;"></div>
+                </div>
+
+                <div class="usageText">
+                    ${used} / ${app.time_limit} min used
+                </div>
+            </div>
+        `;
+
+        container.innerHTML += card;
+    });
+
+    // Show/Hide button
+    if (toggleBtn) {
+        if (allAppLimits.length > 6) {
+            toggleBtn.style.display = "inline-block";
+            toggleBtn.textContent = showAllApps
+                ? "Show Less"
+                : "See All Apps";
+        } else {
+            toggleBtn.style.display = "none";
+        }
+    }
+}
+
+function toggleApps() {
+    showAllApps = !showAllApps;
+    renderAppLimits();
+}
 // PAGE LOAD
 // -----------------------------
 

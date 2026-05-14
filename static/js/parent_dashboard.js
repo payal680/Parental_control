@@ -107,40 +107,56 @@ new Chart(appCtx, {
 
 
 // UPDATE APP LIMIT
+function updateLimit(appName, inputId) {
+    const input = document.getElementById(inputId);
 
-function updateLimit(appName,inputId){
+    if (!input) {
+        alert("Input field not found: " + inputId);
+        return;
+    }
 
-let limit=document.getElementById(inputId).value
+    const limit = parseInt(input.value);
 
-fetch("/update_limit",{
+    if (isNaN(limit) || limit <= 0) {
+        alert("Please enter a valid time limit.");
+        return;
+    }
 
-method:"POST",
+    fetch("/set_app_limit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            child_id: 1,
+            app_name: appName,
+            time_limit: limit
+        })
+    })
+    .then(async response => {
+        const text = await response.text();
+        console.log("Raw Response:", text);
 
-headers:{
-"Content-Type":"application/json"
-},
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            throw new Error("Server did not return valid JSON: " + text);
+        }
+    })
+    .then(data => {
+        console.log("Parsed Response:", data);
 
-body:JSON.stringify({
-
-child_id:1,
-app_name:appName,
-time_limit:limit
-
-})
-
-})
-
-.then(res=>res.json())
-
-.then(data=>{
-
-alert("Limit Updated")
-
-})
-
+        if (data.status === "success") {
+            alert(appName + " limit updated successfully!");
+        } else {
+            alert("Server Error: " + (data.message || "Unknown error"));
+        }
+    })
+    .catch(error => {
+        console.error("Fetch Error:", error);
+        alert("Failed to update limit.\n\nCheck browser console (F12 → Console) for details.");
+    });
 }
-
-
 
 window.onload=function(){
 

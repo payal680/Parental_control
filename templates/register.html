@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register-Parental Control</title>
+<title>Register - Parental Control</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
 </head>
 
@@ -11,70 +11,95 @@
 
 <div class="reg-container">
 
-<h2>Parent & Child Registration</h2>
-
-<form action="/register" method="POST">
-
-<div class="form-grid">
-
-<!-- Parent Section -->
-<div class="form-section">
-
-<h3>Parent Information</h3>
-
-<label>Parent Name</label>
-<input type="text" name="parent_name" required>
-
-<label>Email</label>
-<input type="email" name="email" required>
-
-<label>Password</label>
-<input type="password" name="parent_password" required>
-
-<label>Phone</label>
-<input type="text" name="phone" required>
-
-</div>
+    <h2>Parent & Child Registration</h2>
 
 
-<!-- Child Section -->
-<div class="form-section">
+    <form action="/register" method="POST">
 
-<h3>Child Information</h3>
+        <div class="form-grid">
 
-<label>Child Name</label>
-<input type="text" name="child_name" required>
+            <!-- Parent Section -->
+            <div class="form-section">
 
-<label>Child Email</label>
-<input type="email" name="child_email" required>
+                <h3>Parent Information</h3>
 
-<label>Child Password</label>
-<input type="password" name="child_password" required>
+                <label>Parent Name</label>
+                <input type="text" name="parent_name" required
+                       value="{{ request.form.parent_name if request.form.parent_name else '' }}">
 
-<label>Class / Year</label>
-<input type="text" name="class" required>
+                <label>Email</label>
+                <input type="email" name="email" required
+                       value="{{ request.form.email if request.form.email else '' }}">
 
-<label>Student Type</label>
-<select name="student_type" required>
-<option value="">Select Type</option>
-<option value="school">School</option>
-<option value="college">College</option>
-</select>
+                <label>Password</label>
+                <input type="password" name="parent_password" required>
 
-</div>
+                <label>Phone</label>
+                <input type="text" name="phone" required
+                       value="{{ request.form.phone if request.form.phone else '' }}">
 
-</div>
+            </div>
 
-<div class="submit-area">
-<button type="submit">Register</button>
-</div>
+            <!-- Child Section -->
+            <div class="form-section">
 
-</form>
+                <h3>Child Information</h3>
 
-<p class="login-link">
-Already registered?
-<a href="{{ url_for('login') }}">Login</a>
-</p>
+                <label>Child Name</label>
+                <input type="text" name="child_name" required
+                       value="{{ request.form.child_name if request.form.child_name else '' }}">
+
+                <label>Child Email</label>
+                <input type="email" name="child_email" required
+                       value="{{ request.form.child_email if request.form.child_email else '' }}">
+
+                <label>Child Password</label>
+                <input type="password" name="child_password" required>
+
+                <label>Class / Year</label>
+                <input type="text" name="class" required
+                       value="{{ request.form['class'] if request.form.get('class') else '' }}">
+
+                <label>Student Type</label>
+                <select name="student_type" required>
+                    <option value="">Select Type</option>
+                    <option value="school"
+                        {% if request.form.student_type == 'school' %}selected{% endif %}>
+                        School
+                    </option>
+                    <option value="college"
+                        {% if request.form.student_type == 'college' %}selected{% endif %}>
+                        College
+                    </option>
+                </select>
+
+            </div>
+
+        </div>
+        
+        <div class="submit-area">
+             <!-- Error Message -->
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- Success Message (Optional) -->
+    {% if success %}
+    <div class="success-message">
+        {{ success }}
+    </div>
+    {% endif %}
+            <button type="submit">Register</button>
+        </div>
+
+    </form>
+
+    <p class="login-link">
+        Already registered?
+        <a href="{{ url_for('login') }}">Login</a>
+    </p>
 
 </div>
 

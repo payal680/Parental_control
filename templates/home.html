@@ -38,7 +38,7 @@ ParentalControl
         <div class="slide-content">
 
             <div class="slide-image">
-                <img src="{{ url_for('static', filename='image1.jpg') }}">
+                <img src="{{ url_for('static', filename='images/image1.jpg') }}">
             </div>
 
             <div class="slide-text">
@@ -54,7 +54,7 @@ ParentalControl
         <div class="slide-content">
 
             <div class="slide-image">
-                <img src="{{ url_for('static', filename='image2.jpg') }}">
+                <img src="{{ url_for('static', filename='images/image2.jpg') }}">
             </div>
 
             <div class="slide-text">
@@ -70,7 +70,7 @@ ParentalControl
         <div class="slide-content">
 
             <div class="slide-image">
-                <img src="{{ url_for('static', filename='image3.jpg') }}">
+                <img src="{{ url_for('static', filename='images/image3.jpg') }}">
             </div>
 
             <div class="slide-text">
@@ -86,7 +86,7 @@ ParentalControl
         <div class="slide-content">
 
             <div class="slide-image">
-                <img src="{{ url_for('static', filename='image4.jfif') }}">
+                <img src="{{ url_for('static', filename='images/image4.jfif') }}">
             </div>
 
             <div class="slide-text">
@@ -102,7 +102,7 @@ ParentalControl
         <div class="slide-content">
 
             <div class="slide-image">
-                <img src="{{ url_for('static', filename='image5.jfif') }}">
+                <img src="{{ url_for('static', filename='images/image5.jfif') }}">
             </div>
 
             <div class="slide-text">
@@ -121,27 +121,27 @@ ParentalControl
 
     <div class="steps-container">
 
-        <div class="step-card">
-            <img src="{{ url_for('static', filename='step1.png') }}" alt="Create Account">
-            <h3>Create Parent Account</h3>
+        <div class="step-card" >
+            <img src="{{ url_for('static', filename='images/step1.png') }}" alt="Create Account">
+            <h3><a href="/register">Create Parent Account</a></h3>
             <p>Parents create an account to access the monitoring dashboard.</p>
         </div>
 
         <div class="step-card">
-            <img src="{{ url_for('static', filename='step2.png') }}" alt="Connect Device">
-            <h3>Connect Child Device</h3>
+            <img src="{{ url_for('static', filename='images/step2.png') }}" alt="Connect Device">
+            <h3><a href="/login">Connect Child Device</a></h3>
             <p>Link the child's tablet or device with the parent account.</p>
         </div>
 
         <div class="step-card">
-            <img src="{{ url_for('static', filename='step3.png') }}" alt="Track Activities">
-            <h3>Track Activities</h3>
+            <img src="{{ url_for('static', filename='images/step3.png') }}" alt="Track Activities">
+            <h3><a href="/login">Track Activities</a></h3>
             <p>The system records screen time, apps used and completed tasks.</p>
         </div>
 
         <div class="step-card">
-            <img src="{{ url_for('static', filename='step4.png') }}" alt="View Dashboard">
-            <h3>View Dashboard</h3>
+            <img src="{{ url_for('static', filename='images/step4.png') }}" alt="View Dashboard">
+            <h3><a href="/login">View Dashboard</a></h3>
             <p>Parents can monitor performance and progress through charts.</p>
         </div>
 

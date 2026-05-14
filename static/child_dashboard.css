@@ -377,7 +377,7 @@ margin-bottom:20px;
 
 }
 
-.childAppsGrid{
+#appLimitsContainer{
 
 display:grid;
 grid-template-columns:1fr 1fr;

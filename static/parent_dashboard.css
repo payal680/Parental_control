@@ -264,6 +264,20 @@ flex:1;
 margin-left:10px;
 font-weight:500;
 
+}.app-box button {
+    margin-top: 8px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #4f46e5;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.app-box button:hover {
+    background: #4338ca;
 }
 
 .app-box input{

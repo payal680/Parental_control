@@ -126,105 +126,11 @@
 </div>
 </div>
 <div id="childAppUsageCard">
-
 <h2>App Usage Today</h2>
-
-<div class="childAppsGrid">
-
-<div class="childAppBox">
-
-<div class="appHeader">
-<img src="/static/icons/youtube.png">
-<span>YouTube</span>
-</div>
-
-<div class="progressContainer">
-<div class="progressFill" style="width:60%"></div>
-</div>
-
-<div class="usageText">27 / 45 min used</div>
-
-</div>
-
-
-<div class="childAppBox">
-
-<div class="appHeader">
-<img src="/static/icons/pw.png">
-<span>Physics Wallah</span>
-</div>
-
-<div class="progressContainer">
-<div class="progressFill" style="width:40%"></div>
-</div>
-
-<div class="usageText">18 / 45 min used</div>
-
-</div>
-
-
-<div class="childAppBox">
-
-<div class="appHeader">
-<img src="/static/icons/google.png">
-<span>Google</span>
-</div>
-
-<div class="progressContainer">
-<div class="progressFill" style="width:30%"></div>
-</div>
-
-<div class="usageText">13 / 45 min used</div>
-
-</div>
-
-
-<div class="childAppBox">
-
-<div class="appHeader">
-<img src="/static/icons/whatsapp.png">
-<span>WhatsApp</span>
-</div>
-
-<div class="progressContainer">
-<div class="progressFill" style="width:70%"></div>
-</div>
-
-<div class="usageText">10 / 15 min used</div>
-
-</div>
-<div class="childAppBox">
-
-<div class="appHeader">
-<img src="/static/icons/chrome.png">
-<span>chrome</span>
-</div>
-
-<div class="progressContainer">
-<div class="progressFill" style="width:90%"></div>
-</div>
-
-<div class="usageText">12 / 15 min used</div>
-
-</div>
-<div class="childAppBox">
-
-<div class="appHeader">
-<img src="/static/icons/photos.png">
-<span>photos</span>
-</div>
-
-<div class="progressContainer">
-<div class="progressFill" style="width:35%"></div>
-</div>
-
-<div class="usageText">5 / 15 min used</div>
-
-</div>
-
-</div>
-
-</div>
+<div id="appLimitsContainer"></div>
+<button id="toggleAppsBtn" class="see-all-btn" style="display:none;">
+    See All Apps
+</button>
 <footer class="footer" id="footer" >
 
 <div class="footer-container">
@@ -282,8 +188,6 @@ ensure safety, and create a secure online environment for children.
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='js/child_dashboard.js') }}"></script>
-  
-
 
 </body>
 </html>
