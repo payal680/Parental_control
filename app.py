@@ -1,5 +1,6 @@
 import sqlite3
 import re 
+from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, render_template, request, redirect, session,flash
 import os
 import tkinter
@@ -426,41 +427,101 @@ def see_all():
     )
 
     # veiw assigned task in child dashboard
+# Use this route if you want to get child_id from the session
+# (Recommended approach)
+
+# In your view_tasks() route, pass today's date to the template.
+
+from datetime import datetime
+
 @app.route("/view_tasks")
 def view_tasks():
+    # Allow only logged-in child users
+    if session.get("role") != "child":
+        return redirect("/")
 
     conn = get_db_connection()
 
+    # Get child_id of currently logged-in child
+    child = conn.execute(
+        "SELECT child_id FROM child WHERE user_id = ?",
+        (session["user_id"],)
+    ).fetchone()
+
+    if not child:
+        conn.close()
+        return "Child not found"
+
+    child_id = child["child_id"]
+
+    # Fetch all tasks assigned to this child
     tasks = conn.execute("""
-    SELECT t.task_name, t.assigned_by, t.due_date,
-           c.name as child_name,
-           s.completed
-    FROM tasks t
-    JOIN child c ON t.child_id = c.child_id
-    LEFT JOIN child_task_status s ON t.id = s.task_id
-    """).fetchall()
-
-
-    progress = conn.execute("""
-    SELECT DATE(completed_time) as day,
-           COUNT(*) as total
-    FROM child_task_status
-    WHERE completed = 1
-    GROUP BY day
-    """).fetchall()
+        SELECT
+            t.id,
+            t.task_name,
+            t.assigned_by,
+            t.due_date,
+            COALESCE(cts.completed, 0) AS completed,
+            cts.proof_image,
+            cts.completed_time
+        FROM tasks t
+        LEFT JOIN child_task_status cts
+            ON t.id = cts.task_id
+           AND cts.child_id = ?
+        WHERE t.child_id = ?
+        ORDER BY t.due_date ASC
+    """, (child_id, child_id)).fetchall()
 
     conn.close()
 
+    # ---------------- Summary Calculation ----------------
+    from datetime import datetime
 
-    days = [row["day"] for row in progress]
-    counts = [row["total"] for row in progress]
+    today = datetime.now().date()
+    current_date = today.strftime("%Y-%m-%d")
 
+    total_tasks = len(tasks)
+    completed_tasks = 0
+    pending_tasks = 0
+    overdue_tasks = 0
 
+    for task in tasks:
+        # Completed tasks
+        if task["completed"] == 1:
+            completed_tasks += 1
+        else:
+            # Pending or overdue
+            try:
+                due_date = datetime.strptime(
+                    task["due_date"], "%Y-%m-%d"
+                ).date()
+
+                if due_date < today:
+                    overdue_tasks += 1
+                else:
+                    pending_tasks += 1
+            except:
+                # If due_date format is invalid, count as pending
+                pending_tasks += 1
+
+    # Overall progress percentage
+    if total_tasks > 0:
+        overall_progress = int(
+            (completed_tasks / total_tasks) * 100
+        )
+    else:
+        overall_progress = 0
+
+    # Render template
     return render_template(
         "view_task.html",
         tasks=tasks,
-        days=days,
-        counts=counts
+        total_tasks=total_tasks,
+        completed_tasks=completed_tasks,
+        pending_tasks=pending_tasks,
+        overdue_tasks=overdue_tasks,
+        overall_progress=overall_progress,
+        current_date=current_date
     )
 # ------------------delete task-------------------#
 @app.route("/delete_task/<int:task_id>", methods=["POST"])

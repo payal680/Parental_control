@@ -2,12 +2,13 @@ body{
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-left:400px;
+    
 }
 .task-card{
 background:whitesmoke;
-width:48%;
+width:70%;
 padding:25px;
+margin-left:5%;
 border-radius:12px;
 box-shadow:0 6px 20px rgba(0,0,0,0.1);
 }
@@ -68,10 +69,11 @@ margin-bottom:15px;
 font-weight:600;
 }
 .tasks-list{
-margin-top:30px;
-display:flex;
-flex-direction:column;
-gap:15px;
+ margin-top: 30px;
+ width:100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 divs in each row */
+    gap: 15px;
 }
 
 .task-card{
@@ -89,10 +91,7 @@ font-weight:bold;
 color:red;
 font-weight:bold;
 }
-.tasks-list{
-display:flex;
-
-flex-wrap:wrap;
-gap:20px;
-margin-top:20px;
+h2{
+    text-decoration: underline;
+    text-align: center;
 }
