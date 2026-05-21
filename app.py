@@ -425,12 +425,12 @@ def see_all():
         pending_tasks=pending_tasks,
         completed_tasks=completed_tasks
     )
+#  view more options 
+@app.route("/more")
+def more():
+    return render_template("more.html")
+    # view assigned task 
 
-    # veiw assigned task in child dashboard
-# Use this route if you want to get child_id from the session
-# (Recommended approach)
-
-# In your view_tasks() route, pass today's date to the template.
 
 from datetime import datetime
 
